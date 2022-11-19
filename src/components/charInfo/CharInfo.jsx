@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createRef } from "react";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -61,22 +61,24 @@ const Views = ({ char }) => {
 
   return (
     <>
-      <div className="char__basics">
-        <img src={thumbnail} alt={name} style={imgStyle} />
-        <div>
-          <div className="char__info-name">{name}</div>
-          <div className="char__btns">
-            <a href={homepage} className="button button__main">
-              <div className="inner">homepage</div>
-            </a>
-            <a href={wiki} className="button button__secondary">
-              <div className="inner">Wiki</div>
-            </a>
+      <div>
+        <div className="char__basics">
+          <img src={thumbnail} alt={name} style={imgStyle} />
+          <div>
+            <div className="char__info-name">{name}</div>
+            <div className="char__btns">
+              <a href={homepage} className="button button__main">
+                <div className="inner">homepage</div>
+              </a>
+              <a href={wiki} className="button button__secondary">
+                <div className="inner">Wiki</div>
+              </a>
+            </div>
           </div>
         </div>
+        <div className="char__descr">{description}</div>
+        {comics ? <Comisc comics={comics} /> : "Комикси отсутсвуют"}
       </div>
-      <div className="char__descr">{description}</div>
-      {comics ? <Comisc comics={comics} /> : "Комикси отсутсвуют"}
     </>
   );
 };

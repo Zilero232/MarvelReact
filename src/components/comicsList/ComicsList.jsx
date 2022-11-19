@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createRef } from "react";
 import { Link } from "react-router-dom";
 
 import "./comicsList.scss";
 
 import Spinner from "../spinner/Spinner";
 import useMarvelService from "../../services/MarvelService";
+
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const ComicsList = () => {
   const [comicsList, setComicsList] = useState([]);
@@ -35,18 +37,22 @@ const ComicsList = () => {
 
   function renderItems(arr) {
     const items = arr.map((item, i) => {
+      const ref = createRef();
+
       return (
-        <li className="comics__item" key={i}>
-          <Link to={`/comics/${item.id}`}>
-            <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
-            <div className="comics__item-name">{item.title}</div>
-            <div className="comics__item-price">{item.price}</div>
-          </Link>
-        </li>
+        <CSSTransition classNames="item" nodeRef={ref} timeout={3000} key={i}>
+          <div ref={ref} className="comics__item" key={i}>
+            <Link to={`/comics/${item.id}`}>
+              <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
+              <div className="comics__item-name">{item.title}</div>
+              <div className="comics__item-price">{item.price}</div>
+            </Link>
+          </div>
+        </CSSTransition>
       );
     });
 
-    return <ul className="comics__grid">{items}</ul>;
+    return <TransitionGroup className="comics__grid">{items}</TransitionGroup>;
   }
 
   const items = renderItems(comicsList);

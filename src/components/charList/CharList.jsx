@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createRef } from "react";
 import PropTypes from "prop-types";
+
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import "./charList.scss";
 import useMarvelService from "../../services/MarvelService";
@@ -7,7 +9,7 @@ import Spinner from "../spinner/Spinner";
 
 const CharList = (props) => {
   const [chars, setChars] = useState([]);
-  const [offset, setOffset] = useState(210);
+  const [offset, setOffset] = useState(0);
   const [newItemLoading, setNewItemLoading] = useState(false);
   const [charEnd, setCharEnd] = useState(false);
 
@@ -39,15 +41,19 @@ const CharList = (props) => {
         imgStyle = { objectFit: "unset" };
       }
 
+      const ref =  createRef(null)
+
       return (
-        <li className="char__item" key={i} onClick={() => props.onCharSelected(item.id)}>
-          <img src={item.thumbnail} alt="abyss" style={imgStyle} />
-          <div className="char__name">{item.name}</div>
-        </li>
+        <CSSTransition nodeRef={ref} classNames="item" timeout={2000} key={i}>
+          <div ref={ref} className="char__item" key={i} onClick={() => props.onCharSelected(item.id)}>
+            <img src={item.thumbnail} alt="abyss" style={imgStyle} />
+            <div className="char__name">{item.name}</div>
+          </div>
+        </CSSTransition>
       );
     });
 
-    return <ul className="char__grid">{items}</ul>;
+    return <TransitionGroup className="char__grid">{items}</TransitionGroup>;
   }
 
   const items = renderItems(chars);
