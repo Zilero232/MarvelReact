@@ -40,7 +40,7 @@ const ComicsList = () => {
       const ref = createRef();
 
       return (
-        <CSSTransition classNames="item" nodeRef={ref} timeout={3000} key={i}>
+        <CSSTransition classNames="item"   nodeRef={ref} timeout={3000} key={i}>
           <div ref={ref} className="comics__item" key={i}>
             <Link to={`/comics/${item.id}`}>
               <img src={item.thumbnail} alt={item.title} className="comics__item-img" />

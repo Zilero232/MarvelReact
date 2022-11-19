@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
 import Spinner from "../../components/spinner/Spinner";
-import { MainPage, ComicsPage, Page404, SingleComicPage } from "../../pages";
+import { MainPage, ComicsPage, Page404, SinglePage, SingleComicLayout, SingleCharacterLayout } from "../../pages";
 
 const App = () => {
   return (
@@ -17,7 +17,8 @@ const App = () => {
 
               <Route path="/comics" element={<ComicsPage />} />
 
-              <Route path="/comics/:comicId" element={<SingleComicPage />} />
+              <Route path="/comics/:id" element={<SinglePage dataType="comic" Component={SingleComicLayout} />} />
+              <Route path="/character/:id" element={<SinglePage dataType="character" Component={SingleCharacterLayout} />} />
 
               <Route path="*" element={<Page404 />} />
             </Routes>
