@@ -10,7 +10,7 @@ import "./CharSearchForm.scss";
 
 const CharSearchForm = () => {
   const [char, setChar] = useState(null);
-  const { loading, error, getCharacterByName, clearError } = useMarvelService();
+  const { process, getCharacterByName, clearError } = useMarvelService();
 
   const onCharLoader = (char) => {
     setChar(char);
@@ -22,11 +22,12 @@ const CharSearchForm = () => {
     getCharacterByName(name).then(onCharLoader);
   };
 
-  const errorMessage = error ? (
-    <div className="char__search-critical-error">
-      <ErrorMessage />
-    </div>
-  ) : null;
+  const errorMessage =
+    process === "error" ? (
+      <div className="char__search-critical-error">
+        <ErrorMessage />
+      </div>
+    ) : null;
 
   const results = !char ? null : char.length > 0 ? (
     <div className="char__search-wrapper">
@@ -46,8 +47,10 @@ const CharSearchForm = () => {
         initialValues={{
           charName: "",
         }}
-        validationSchema={ Yup.object( { charName: Yup.string().required("This field is required") }) }
-        onSubmit={ ({ charName }) => { updateChar(charName)}}
+        validationSchema={Yup.object({ charName: Yup.string().required("This field is required") })}
+        onSubmit={({ charName }) => {
+          updateChar(charName);
+        }}
       >
         <Form>
           <label className="char__search-label" htmlFor="charName">
@@ -55,7 +58,7 @@ const CharSearchForm = () => {
           </label>
           <div className="char__search-wrapper">
             <Field id="charName" name="charName" type="text" placeholder="Enter name" />
-            <button type="submit" className="button button__main" disabled={loading}>
+            <button type="submit" className="button button__main" disabled={process === "loading"}>
               <div className="inner">find</div>
             </button>
           </div>

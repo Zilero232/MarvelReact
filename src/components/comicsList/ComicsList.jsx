@@ -2,11 +2,9 @@ import { useState, useEffect, createRef } from "react";
 import { Link } from "react-router-dom";
 
 import "./comicsList.scss";
-
-import Spinner from "../spinner/Spinner";
-import useMarvelService from "../../services/MarvelService";
-
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import setContent from "../../utils/setContent";
+import useMarvelService from "../../services/MarvelService";
 
 const ComicsList = () => {
   const [comicsList, setComicsList] = useState([]);
@@ -14,7 +12,7 @@ const ComicsList = () => {
   const [offset, setOffset] = useState(0);
   const [comicsEnded, setComicsEnded] = useState(false);
 
-  const { loading, getAllComics } = useMarvelService();
+  const { process, getAllComics } = useMarvelService();
 
   useEffect(() => {
     onRequest(offset, true);
@@ -56,14 +54,10 @@ const ComicsList = () => {
     return <TransitionGroup className="comics__grid">{items}</TransitionGroup>;
   }
 
-  const items = renderItems(comicsList);
-  const spinner = loading && !newItemLoading ? <Spinner /> : null;
-
   return (
     <>
       <div className="comics__list">
-        {spinner}
-        {items}
+        {setContent(process, () => renderItems(comicsList), comicsList, newItemLoading)}
         <button
           disabled={newItemLoading}
           style={{ display: comicsEnded ? "none" : "block" }}

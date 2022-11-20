@@ -1,11 +1,12 @@
-import { useState, useEffect, createRef } from "react";
+import { useState, useEffect, createRef, useMemo } from "react";
 import PropTypes from "prop-types";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import "./charList.scss";
+
 import useMarvelService from "../../services/MarvelService";
-import Spinner from "../spinner/Spinner";
+import setContent from "../../utils/setContent";
 
 const CharList = (props) => {
   const [chars, setChars] = useState([]);
@@ -13,7 +14,7 @@ const CharList = (props) => {
   const [newItemLoading, setNewItemLoading] = useState(false);
   const [charEnd, setCharEnd] = useState(false);
 
-  const { loading, getAllCharacters } = useMarvelService();
+  const { process, getAllCharacters } = useMarvelService();
 
   useEffect(() => {
     updateChars(offset, true);
@@ -57,14 +58,14 @@ const CharList = (props) => {
     return <TransitionGroup className="char__grid">{items}</TransitionGroup>;
   }
 
-  const items = renderItems(chars);
-
-  const spinner = loading && !newItemLoading ? <Spinner /> : null;
+  const elements = useMemo(() => {
+    return setContent(process, () => renderItems(chars), chars, newItemLoading);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [process]);
 
   return (
     <div className="char__list">
-      {spinner}
-      {items}
+      {elements}
 
       <button
         className="button button__main button__long"
