@@ -18,6 +18,7 @@ const ComicsList = () => {
 
   useEffect(() => {
     onRequest(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRequest = (offset, initial) => {
@@ -40,7 +41,7 @@ const ComicsList = () => {
       const ref = createRef();
 
       return (
-        <CSSTransition classNames="item"   nodeRef={ref} timeout={3000} key={i}>
+        <CSSTransition classNames="item" nodeRef={ref} timeout={3000} key={i}>
           <div ref={ref} className="comics__item" key={i}>
             <Link to={`/comics/${item.id}`}>
               <img src={item.thumbnail} alt={item.title} className="comics__item-img" />
@@ -59,18 +60,20 @@ const ComicsList = () => {
   const spinner = loading && !newItemLoading ? <Spinner /> : null;
 
   return (
-    <div className="comics__list">
-      {spinner}
-      {items}
-      <button
-        disabled={newItemLoading}
-        style={{ display: comicsEnded ? "none" : "block" }}
-        className="button button__main button__long"
-        onClick={() => onRequest(offset)}
-      >
-        <div className="inner">load more</div>
-      </button>
-    </div>
+    <>
+      <div className="comics__list">
+        {spinner}
+        {items}
+        <button
+          disabled={newItemLoading}
+          style={{ display: comicsEnded ? "none" : "block" }}
+          className="button button__main button__long"
+          onClick={() => onRequest(offset)}
+        >
+          <div className="inner">load more</div>
+        </button>
+      </div>
+    </>
   );
 };
 

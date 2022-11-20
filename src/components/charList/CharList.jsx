@@ -17,6 +17,7 @@ const CharList = (props) => {
 
   useEffect(() => {
     updateChars(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateChars = (offset, initial) => {
@@ -41,7 +42,7 @@ const CharList = (props) => {
         imgStyle = { objectFit: "unset" };
       }
 
-      const ref =  createRef(null)
+      const ref = createRef(null);
 
       return (
         <CSSTransition nodeRef={ref} classNames="item" timeout={2000} key={i}>

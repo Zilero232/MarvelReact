@@ -1,4 +1,4 @@
-import { useState, useEffect, createRef } from "react";
+import { useState, useEffect } from "react";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -15,6 +15,7 @@ const CharInfo = (props) => {
 
   useEffect(() => {
     updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const CharInfo = (props) => {
       setCharId(props.charId);
       updateChar();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.charId]);
 
   const updateChar = () => {
